@@ -4,6 +4,7 @@ import com.jbouchier.horsetpwithme.HorseTpWithMe;
 import com.jbouchier.horsetpwithme.Language;
 import com.jbouchier.horsetpwithme.ScreenerException;
 import com.jbouchier.horsetpwithme.event.VehicleTeleportEvent;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
@@ -68,12 +69,12 @@ public class BlinkTeleportUtil {
         runTask(() -> {
             // teleport passengers and vehicle to destination
             {
-                vehicle.teleport(event.getTo());
+                PaperLib.teleportAsync(vehicle, event.getTo());
                 vehicle.setFallDistance(-Float.MAX_VALUE);
                 refreshEntity(driver, vehicle);
                 //EntityNMS.refreshEntity(driver, vehicle);
                 for (Entity passenger : passengers) {
-                    passenger.teleport(event.getTo());
+                    PaperLib.teleportAsync(passenger, event.getTo());
                     passenger.setFallDistance(-Float.MAX_VALUE);
                     refreshEntity(driver, passenger);
                     //EntityNMS.refreshEntity(driver, passenger);

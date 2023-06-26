@@ -1,5 +1,7 @@
 package com.jbouchier.horsetpwithme;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import com.jbouchier.horsetpwithme.cmd.MainCommand;
 import com.jbouchier.horsetpwithme.cmd.Reseat;
 import com.jbouchier.horsetpwithme.cmd.TeleportAsPassenger;
@@ -14,8 +16,9 @@ import static com.jbouchier.horsetpwithme.util.GeneralUtil.runTask;
 import static com.jbouchier.horsetpwithme.util.GeneralUtil.setExecutor;
 
 public class HorseTpWithMe extends JavaPlugin {
-
+    private static TaskScheduler scheduler;
     public void onEnable() {
+        scheduler = UniversalScheduler.getScheduler(this);
         new Metrics(this, 3502);
         getServer().getPluginManager().registerEvents(EventListeners.INSTANCE, this);
         runTask(PermissionHandler::build, 0);
@@ -35,5 +38,9 @@ public class HorseTpWithMe extends JavaPlugin {
             return true;
         }
         return true;
+    }
+
+    public static TaskScheduler getScheduler() {
+        return scheduler;
     }
 }

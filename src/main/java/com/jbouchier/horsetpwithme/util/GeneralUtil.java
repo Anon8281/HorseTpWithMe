@@ -24,12 +24,12 @@ public class GeneralUtil {
     public static void runTask(
             @NotNull Runnable runnable, long delay
     ) {
-        Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(HorseTpWithMe.class), runnable, delay);
+        HorseTpWithMe.getScheduler().runTaskLater(runnable, delay);
     }
 
     // same as above, just async
     public static void runAsync(@NotNull Runnable runnable, long delay) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(JavaPlugin.getPlugin(HorseTpWithMe.class), runnable, delay);
+        HorseTpWithMe.getScheduler().runTaskLaterAsynchronously(runnable, delay);
     }
 
     // true if the specified player DOES NOT have the specified 'horsetpwithme.' permission
