@@ -27,6 +27,12 @@ public class GeneralUtil {
         HorseTpWithMe.getScheduler().runTaskLater(runnable, delay);
     }
 
+    public static void runTask(@NotNull Entity entity,
+            @NotNull Runnable runnable, long delay
+    ) {
+        HorseTpWithMe.getScheduler().runTaskLater(entity, runnable, delay);
+    }
+
     // same as above, just async
     public static void runAsync(@NotNull Runnable runnable, long delay) {
         HorseTpWithMe.getScheduler().runTaskLaterAsynchronously(runnable, delay);

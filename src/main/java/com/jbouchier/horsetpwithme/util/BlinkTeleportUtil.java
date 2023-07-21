@@ -66,7 +66,7 @@ public class BlinkTeleportUtil {
         VehicleTeleportEvent event = new VehicleTeleportEvent(driver, vehicle, passengers, destination);
         if (event.isCancelled()) return;
 
-        runTask(() -> {
+        runTask(vehicle, () -> {
             // teleport passengers and vehicle to destination
             {
                 PaperLib.teleportAsync(vehicle, event.getTo());
@@ -112,7 +112,7 @@ public class BlinkTeleportUtil {
             playerValid = driver;
         }
 
-        runTask(() -> {
+        runTask(vehicleValid, () -> {
             vehicleValid.addPassenger(playerValid);
             runTask(() -> stageTwo(vehicleValid, (Player) playerValid, passengers), 1);
         }, BUKKIT_REFRESH ? 0 : 2);
@@ -219,10 +219,13 @@ public class BlinkTeleportUtil {
 
     public static void refreshEntity(@NotNull Player player, @NotNull org.bukkit.entity.Entity entity) {
         if (BUKKIT_REFRESH) {
-            // This allows the next line to function.
-            player.hideEntity(JavaPlugin.getPlugin(HorseTpWithMe.class), entity);
-            // This is the important stuff.
-            player.showEntity(JavaPlugin.getPlugin(HorseTpWithMe.class), entity);
+            runTask(player, () -> {
+                // This allows the next line to function.
+                player.hideEntity(JavaPlugin.getPlugin(HorseTpWithMe.class), entity);
+                // This is the important stuff.
+                // - Really? Are you sure?
+                player.showEntity(JavaPlugin.getPlugin(HorseTpWithMe.class), entity);
+            }, 0L);
         } else {
             // TODO Insert ProtocolLib / NMS Solution here.
         }

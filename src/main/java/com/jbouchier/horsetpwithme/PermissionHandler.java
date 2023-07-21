@@ -11,6 +11,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PermissionHandler {
     private final static String base = "horsetpwithme.";
@@ -59,16 +60,18 @@ public class PermissionHandler {
             Location uber = new Location(Bukkit.getWorlds().get(0), 0, -100, 0);
             for (EntityType type : EntityType.values()) {
                 if (!type.isSpawnable()) continue;
-                boolean isVehicle;
+                AtomicBoolean isVehicle = new AtomicBoolean(false);
 
                 try {
-                    Entity entity = Objects.requireNonNull(uber.getWorld()).spawnEntity(uber, type);
-                    isVehicle = entity instanceof Vehicle;
-                    entity.remove();
+                    HorseTpWithMe.getScheduler().runTask(uber, () -> {
+                        Entity entity = Objects.requireNonNull(uber.getWorld()).spawnEntity(uber, type);
+                        isVehicle.set(entity instanceof Vehicle);
+                        entity.remove();
+                    });
                 } catch (IllegalArgumentException | NullPointerException ignored) {
                     continue;
                 }
-                make(tp + type.name().toLowerCase(), isVehicle ? bar : foo, true);
+                make(tp + type.name().toLowerCase(), isVehicle.get() ? bar : foo, true);
             }
         }
 
